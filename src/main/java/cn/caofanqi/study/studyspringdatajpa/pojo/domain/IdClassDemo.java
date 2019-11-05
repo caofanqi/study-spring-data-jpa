@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 /**
  * 联合主键的使用，在类上添加@IdClass并指定外部主键类，每个主键上都要添加@Id注解。
+ * @author caofanqi
  */
 @Data
 @Entity
