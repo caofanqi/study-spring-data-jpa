@@ -5,13 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 作者实体
@@ -40,6 +35,10 @@ public class Author {
     @JoinColumn(name = "author_info_id",referencedColumnName = "id")
     private AuthorInfo authorInfo;
 
-
+    /**
+     * 作者和书籍是多对多关系，我们让作者作为非拥有方，使用mappedBy指向拥有放属性
+     */
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books;
 
 }
