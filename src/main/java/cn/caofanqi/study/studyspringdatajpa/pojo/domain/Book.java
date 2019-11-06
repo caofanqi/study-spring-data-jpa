@@ -36,17 +36,17 @@ public class Book {
     /**
      * 书和作者是多对多的关系，我们让book为关联拥有放，添加@JoinTable注解。
      */
-//    @ManyToMany
-//    @JoinTable(name = "jpa_book_author",
-//            joinColumns = @JoinColumn(name="book_id", referencedColumnName="id"),
-//            inverseJoinColumns= @JoinColumn(name="author_id", referencedColumnName="id"))
-//    private List<Author> authors;
+    @ManyToMany
+    @JoinTable(name = "jpa_book_author",
+            joinColumns = @JoinColumn(name="book_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name="author_id", referencedColumnName="id"))
+    private List<Author> authors;
 
     /**
      * 使用两个双向一对多/多对一来替代 多对多
      */
-    @OneToMany(mappedBy = "book")
-    private List<BookAuthor> bookAuthors;
+//    @OneToMany(mappedBy = "book")
+//    private List<BookAuthor> bookAuthors;
 
 
 }
