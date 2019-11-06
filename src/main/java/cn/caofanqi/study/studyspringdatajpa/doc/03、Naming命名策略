@@ -1,0 +1,15 @@
+1、在Entity实体中，命名方式有两种；
+    一种是显示命名，即通过@Table的name属性指定对应的数据库表名称，@Column的name属性指定实体字段对应数据库字段的名称。
+    另一种是隐式命名，显示命名一般不是必要的，所以可以不设置名称，交给框架来进行隐式命名。
+
+
+2、Naming命名策略
+    我们通过spring-boot-autoconfigure中的spring.factories可以找到自动配置类org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+    该自动配置类引入JpaBaseConfiguration的实现类HibernateJpaConfiguration来进行hibernate相关的jpa配置；在JpaBaseConfiguration配置entityManagerFactory时，调用了getVendorProperties方法
+    来获取供应商属性，该方法由HibernateJpaConfiguration实现，当中调用了HibernateProperties的determineHibernateProperties方法，根据标准的JPA属性和Hibernate设置，确定主Hibernate EntityManagerFactory初始化的配置属性。
+    继续往下走到Naming的applyNamingStrategies应用命名策略可以知道，如果我们不配置命名策略的话，默认由SpringImplicitNamingStrategy和SpringPhysicalNamingStrategy分两个阶段共同完成命名，先走SpringImplicitNamingStrategy再走SpringPhysicalNamingStrategy。
+
+    第一步：如果我们没有使用@Table或@Column指定了表或字段的名称，则由SpringImplicitNamingStrategy为我们隐式处理，表名隐式处理为类名，列名隐式处理为字段名。如果指定了表名列名，SpringImplicitNamingStrategy不起作用。
+    第二步：将上面处理过的逻辑名称解析成物理名称。无论在实体中是否显示指定表名列名，SpringPhysicalNamingStrategy都会被调用。
+
+    所以如果我们想要自定义命名策略，可以根据自己的需求选择继承二者，并在配置文件中通过spring.jpa.hibernate.naming.implicit-strategy 或 spring.jpa.hibernate.naming.physical-strategy 进行指定自己的策略(例如为表名添加指定前缀)。
