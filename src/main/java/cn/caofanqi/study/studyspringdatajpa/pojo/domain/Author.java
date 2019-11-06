@@ -38,7 +38,13 @@ public class Author {
     /**
      * 作者和书籍是多对多关系，我们让作者作为非拥有方，使用mappedBy指向拥有放属性
      */
-    @ManyToMany(mappedBy = "authors")
-    private List<Book> books;
+//    @ManyToMany(mappedBy = "authors")
+//    private List<Book> books;
+
+    /**
+     * 使用两个双向一对多/多对一来替代 多对多
+     */
+    @OneToMany(mappedBy = "author")
+    private List<BookAuthor> bookAuthors;
 
 }
