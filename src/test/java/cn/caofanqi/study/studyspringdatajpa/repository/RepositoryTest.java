@@ -1,8 +1,10 @@
 package cn.caofanqi.study.studyspringdatajpa.repository;
 
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Address;
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Author;
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Book;
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Category;
+import com.google.common.collect.Maps;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -11,6 +13,7 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Rollback(false)
@@ -73,21 +76,21 @@ public class RepositoryTest {
 
 
         //测试查询
-        Optional<Category> categoryOptional = categoryRepository.findById(1L);
-        if (categoryOptional.isPresent()) {
-            Category category = categoryOptional.get();
-
-            System.out.println(category.getCategoryName());
-
-            List<Book> books = category.getBooks();
-
-            books.forEach(b -> {
-                System.out.println(b.getBookName() + "===");
-                List<Author> authors = b.getAuthors();
-                authors.forEach(a -> System.out.println(a.getAuthorName()));
-            });
-
-        }
+//        Optional<Category> categoryOptional = categoryRepository.findById(1L);
+//        if (categoryOptional.isPresent()) {
+//            Category category = categoryOptional.get();
+//
+//            System.out.println(category.getCategoryName());
+//
+//            List<Book> books = category.getBooks();
+//
+//            books.forEach(b -> {
+//                System.out.println(b.getBookName() + "===");
+//                List<Author> authors = b.getAuthors();
+//                authors.forEach(a -> System.out.println(a.getAuthorName()));
+//            });
+//
+//        }
 
     }
 
@@ -152,6 +155,45 @@ public class RepositoryTest {
 //            });
 //
 //        }
+
+    }
+
+
+    /**
+     * 测试一个用户多个地址的可嵌入集合属性
+     */
+    @Test
+    public void test3(){
+
+        //添加
+//        Address homeAddress = new Address("黑龙江省","七台河市","桃山区","xxx小区xx单元xx室","154600");
+//        Address companyAddress = new Address("浙江省","杭州市","滨江区","xxx公司","310000");
+//
+//        Map<String,Address> addressMap = Maps.newHashMap();
+//        addressMap.put("home",homeAddress);
+//        addressMap.put("company",companyAddress);
+//
+//        Author author = Author.builder().authorName("xx作家").addresses(addressMap).build();
+//
+//        authorRepository.save(author);
+
+
+        //查询
+//        Optional<Author> authorOptional = authorRepository.findById(1L);
+//        if (authorOptional.isPresent()){
+//            Author author = authorOptional.get();
+//
+//            System.out.println(author.getAuthorName());
+//
+//            Map<String, Address> addresses = author.getAddresses();
+//
+//            System.out.println("home address : " + addresses.get("home"));
+//            System.out.println("company address : " + addresses.get("company"));
+//
+//            //删除
+//            addresses.remove("company");
+//        }
+
 
     }
 

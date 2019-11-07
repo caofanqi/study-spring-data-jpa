@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 作者实体
@@ -46,5 +49,38 @@ public class Author {
      */
 //    @OneToMany(mappedBy = "author")
 //    private List<BookAuthor> bookAuthors;
+
+    /**
+     * &#064;Embedded 指定该字段是一个嵌入对象，并可以通过 &#064;AttributeOverrides和&#064;AttributeOverride来修改
+     * 嵌入对象在本实体表中的映射字段名称，修改后原有可嵌入对象中的字段设置失效。
+      */
+//    @Embedded
+//    @AttributeOverrides({
+//            @AttributeOverride(name = "detailedAddress",column = @Column(name = "addr_detailed")),
+//            @AttributeOverride(name = "zipCode",column = @Column(name = "addr_zip"))
+//    })
+//    private Address address;
+
+
+    /**
+     *  &#064;ElementCollection 映射基本类型和可嵌入类型集合，可以使用&#064;CollectionTable 指定额外产生表的名称，外键名称等。
+     */
+//    @ElementCollection
+//    @CollectionTable(name = "jpa_author_nick",joinColumns = {@JoinColumn(name = "a_id",referencedColumnName = "id")})
+//    private Set<String> nickName;
+
+
+    /**
+     * 一个作者有多个地址
+     */
+    @ElementCollection
+    @MapKeyColumn(name = "addr_key")
+    @CollectionTable(name = "jpa_author_address")
+    @AttributeOverrides({
+            @AttributeOverride(name = "value.detailedAddress",column = @Column(name = "addr_detailed")),
+            @AttributeOverride(name = "value.zipCode",column = @Column(name = "addr_zip"))
+    })
+
+    private Map<String,Address> addresses;
 
 }
