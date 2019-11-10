@@ -1,0 +1,53 @@
+1、Repository、@RepositoryDefinition
+spring-data-commons项目是所有spring-data项目的核心，而当中最重要的就是Repository接口了。
+它是做数据库操作的最底层的抽象接口、最顶级的父类，打开Repository接口看其源码，发现里面其实
+什么方法都没有，仅仅起到一个标识作用。捕获要管理的域类型和域类型的id类型。用途是保存类型信息，
+并能够在类路径扫描期间发现继承该接口的接口，帮助我们创建代理类。与继承Repository接口相等价的
+就是，在接口上添加@RepositoryDefinition注解，并通过domainClass和idClass指定域类型和域id类型。
+
+@Indexed 我们发现在Repository接口上有一个@Indexed 注解，是Spring5提供的注解，用于提升应用启动性能。
+    这个注解单独存在不起作用，要想使其生效的话，要添加spring-context-indexer依赖。
+    在编译时会将@CompoentScan扫描指定package中要生成的bean写在METE-INF/spring.components文件中，
+    当项目启动时，就会读取这个文件，不会再扫描指定的package了，从而提升性能。
+
+2、CrudRepository、@NoRepositoryBean
+    CrudRepository作为Repository接口的扩展，提供了一套通用的CRUD方法，而@NoRepositoryBean注解的意思是，
+不要让Spring生成该类的代理类。
+
+3、PagingAndSortingRepository
+    继承CrudRepository提供了分页和排序的方法。
+
+    Sort查询的排序选项，至少提供一个属性列表来进行排序，不能是null或空，默认是升序ASC；
+    可以通过Sort.by 来构建Sort对象:
+        public static Sort by(String... properties) 根据给定的属性列表进行升序排序；
+        public static Sort by(Direction direction, String... properties) 指定属性和排序方向，Direction.ASC（升序）、Direction.DESC（降序）；
+        public static Sort by(Order... orders)/public static Sort by(List<Order> orders) 根据给定的一组order进行排序。
+
+    Order,实现一个排序对，提供方向和属性，为sort提供输入。也就是说，可以针对每一个属性设置不同的升序或降序。
+    可以通过一下方式来构建Order对象：
+        public static Order by(String property) ，指定属性返回order对象，默认使用升序。
+        public static Order asc(String property)，返回指定属性升序的order对象。
+        public static Order desc(String property),返回指定属性降序的order对象。
+
+    Pageable分页信息的抽象接口，实现类是PageRequest；
+    可以通过一下方式来构建Pageable对象：
+        public static PageRequest of(int page, int size)，创建一个未排序的PageRequest，page从0开始；
+        public static PageRequest of(int page, int size, Direction direction, String... properties)，创建一个根据给定方向和属性排序的分页对象。
+        public static PageRequest of(int page, int size, Sort sort)，创建一个根据sort进行排序的分页对象。
+
+    Page，封装分页结果信息，可以通过如下方法获取分页信息。
+        page.getContent() ，分页查询结果列表;
+        page.getNumberOfElements()，当前分页结果列表中的元素个数;
+        page.getTotalElements()，当前条件下总条数;
+        page.getTotalPages()，总页数;
+        page.getNumber()，我们自己传的page;
+        page.getSize()，我们自己传入的size。
+
+
+
+
+
+
+
+
+
