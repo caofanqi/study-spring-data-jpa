@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.RepositoryDefinition;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 //@RepositoryDefinition(domainClass = Book.class,idClass = Long.class)
 //public interface BookRepository extends Repository<Book,Long>{
 //public interface BookRepository extends CrudRepository<Book,Long> {
-public interface BookRepository extends PagingAndSortingRepository<Book,Long> {
+public interface BookRepository extends PagingAndSortingRepository<Book,Long> , QueryByExampleExecutor<Book> {
 
     /**
      * 根据书名查找书籍

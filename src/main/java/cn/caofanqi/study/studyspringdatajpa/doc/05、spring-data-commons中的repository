@@ -51,6 +51,38 @@ spring-data-commons项目是所有spring-data项目的核心，而当中最重�
         page.getSize()，我们自己传入的size。
 
 
+4、QueryByExampleExecutor<T>示例查询(QBE)
+    该接口位于spring-data-commons项目的repository.query包中，通过按示例来进行查询，允许动态查询创建。
+使用方法，自己的repository继承QueryByExampleExecutor并指定域类型，就可以使用它提供的功能了。
+
+    QueryByExampleExecutor接口中的方法都需要传入一个用于创建查询的Example，它由probe和ExampleMatcher两部分构成；
+    probe：带有填充字段的域对象的实际示例；
+    ExampleMatcher：匹配器，附带有关如何匹配特定字段的详细信息。可以在多个示例中重复使用它。
+    可以通过Example的of()方法，来构建Example实例:
+        static <T> Example<T> of(T probe) ,通过域对象实例构建Example，使用默认的匹配器；
+        static <T> Example<T> of(T probe, ExampleMatcher matcher)，通过域对象实例和匹配器构建Example。
+
+    适合使用场景：
+        使用一组静态或动态约束查询数据存储。
+        频繁地重构域对象，而不必担心破坏现有的查询。
+        独立于底层数据存储API工作。
+    使用限制：
+        不支持嵌套或分组属性约束，例如firstname = ?0 or (firstname = ?1 and lastname = ?2)。
+        仅支持字符串的开始/包含/结束/正则表达式匹配，以及其他属性类型的完全匹配。
+
+ 　　最佳实践：
+
+　　　　首先要判断是否需要我们自己构建匹配器，如果默认匹配器，可以完成，我们就不需要创建。
+
+　　　　判断null值是否要作为条件，一般都是忽略的，如果null值作为条件，将不想作为条件的null属性添加到忽略列表。
+
+　　　　基本类型是有默认值的，如果不作为条件，要加入到忽略列表。
+
+　　　　不同的字符串属性，如果需要不同的匹配方式，进行单独设置。
+
+不是特别复杂的动态查询，使用QBE，还是很方便的。
+
+
 
 
 

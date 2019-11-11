@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public class Book {
     private Long id;
 
     private  String bookName;
+
+    private LocalDate publishDate;
 
     /**
      * 书和门类是多对一的关系
