@@ -22,12 +22,19 @@ spring-data-commons项目是所有spring-data项目的核心，而当中最重�
         public static Sort by(String... properties) 根据给定的属性列表进行升序排序；
         public static Sort by(Direction direction, String... properties) 指定属性和排序方向，Direction.ASC（升序）、Direction.DESC（降序）；
         public static Sort by(Order... orders)/public static Sort by(List<Order> orders) 根据给定的一组order进行排序。
+    可以通过Sort.and()方法将多个sort组合再一起,通过Sort.ascending()/Sort.descending指定排序方向。
+
+    还可以通过Sort.sort(Class<T> type) 来构造类型安全的排序对象：
+        public static <T> TypedSort<T> sort(Class<T> type) 根据指定class类型构造该类型的typeSort排序对象；
+        通过TypedSort.by 方法来构建排序字段,通过ascending()/descending指定排序方向，使用and()方法进行连接。
+
 
     Order,实现一个排序对，提供方向和属性，为sort提供输入。也就是说，可以针对每一个属性设置不同的升序或降序。
     可以通过一下方式来构建Order对象：
         public static Order by(String property) ，指定属性返回order对象，默认使用升序。
         public static Order asc(String property)，返回指定属性升序的order对象。
         public static Order desc(String property),返回指定属性降序的order对象。
+
 
     Pageable分页信息的抽象接口，实现类是PageRequest；
     可以通过一下方式来构建Pageable对象：

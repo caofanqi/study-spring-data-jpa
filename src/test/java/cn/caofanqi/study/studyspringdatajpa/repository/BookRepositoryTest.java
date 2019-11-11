@@ -49,9 +49,17 @@ class BookRepositoryTest {
     @Test
     void testPagingAndSortingRepository(){
 
-        Sort.Order id = Sort.Order.by("id");
-        Sort.Order bookName = Sort.Order.desc("bookName");
-        Sort sort = Sort.by(id,bookName);
+//        Sort.Order id = Sort.Order.by("id");
+//        Sort.Order bookName = Sort.Order.desc("bookName");
+//        Sort sort = Sort.by(id,bookName);
+
+        //等价于上面三句代码
+//        Sort sort = Sort.by("id").ascending().and(Sort.by("bookName").descending());
+
+        //使用类型安全的排序
+        Sort.TypedSort<Book> bookTypedSort = Sort.sort(Book.class);
+        Sort sort = bookTypedSort.by(Book::getId).ascending()
+                .and(bookTypedSort.by(Book::getBookName).descending());
 
         Pageable pageable = PageRequest.of(2,2, sort);
 
