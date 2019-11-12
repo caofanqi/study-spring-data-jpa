@@ -19,7 +19,8 @@ import java.util.List;
 //@RepositoryDefinition(domainClass = Book.class,idClass = Long.class)
 //public interface BookRepository extends Repository<Book,Long>{
 //public interface BookRepository extends CrudRepository<Book,Long> {
-public interface BookRepository extends PagingAndSortingRepository<Book,Long> , QueryByExampleExecutor<Book> {
+//public interface BookRepository extends PagingAndSortingRepository<Book,Long> , QueryByExampleExecutor<Book> {
+public interface BookRepository extends JpaRepository<Book,Long> {
 
     /**
      * 根据书名查找书籍

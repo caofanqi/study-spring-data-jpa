@@ -1,9 +1,6 @@
 package cn.caofanqi.study.studyspringdatajpa.pojo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,12 +20,14 @@ import javax.persistence.Table;
 @Table(name = "jpa_author_info")
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private String idCardNumber;
 
     /**

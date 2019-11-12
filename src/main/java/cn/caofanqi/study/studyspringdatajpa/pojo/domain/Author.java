@@ -1,11 +1,13 @@
 package cn.caofanqi.study.studyspringdatajpa.pojo.domain;
 
+import cn.caofanqi.study.studyspringdatajpa.pojo.enums.Sex;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +32,20 @@ public class Author {
 
     private String authorName;
 
+    private LocalDate birthday;
+
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
+
+    private String email;
+
+    private String phone;
+
     /**
      * &#064;OneToOne 指定一对一关联关系
      * &#064;JoinColumn name 本表中外键列的列名，referencedColumnName ，关联表中与name进行对应的列名
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "author_info_id",referencedColumnName = "id")
     private AuthorInfo authorInfo;
 

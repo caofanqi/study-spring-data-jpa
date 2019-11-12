@@ -92,4 +92,11 @@ class BookRepositoryTest {
 
     }
 
+    @Test
+    void testJpaRepository(){
+
+        List<Book> books = bookRepository.findAll();
+        System.out.println(books.size());
+    }
+
 }

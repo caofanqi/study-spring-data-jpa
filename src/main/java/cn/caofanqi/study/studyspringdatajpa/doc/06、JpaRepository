@@ -1,3 +1,9 @@
 1、JpaRepository
     之前我们学习的Repository都是Spring-Data为了兼容NoSQL而进行的一些抽象封装，从JpaRepository开始是对关系型数据库进行抽象封装。
-JpaRepository位于spring-data-jpa项目下的repository包中，继承了PagingAndSortingRepository和QueryByExampleExecutor接口
+JpaRepository位于spring-data-jpa项目下的repository包中，继承了PagingAndSortingRepository和QueryByExampleExecutor接口，因此也就拥有
+它们的全部方法。并且将默认实现的查询结果变成了List。并且新增了刷新更改到数据库、保存并刷新、批量删除等方法。使用方法同之前的Repository一样
+我们直接继承它就好了，JpaRepository也是我们最常继承的接口。
+
+
+
+
