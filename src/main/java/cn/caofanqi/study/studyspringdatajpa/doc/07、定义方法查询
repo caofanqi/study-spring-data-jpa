@@ -17,6 +17,35 @@
         2.2.3、可以通过OrderBy子句附加引用属性，为查询方法提供排序方向（Asc或Desc）。
         2.2.4、当实体中的属性也是一个实体时，我们一般使用下划线_来手动定义遍历点（所以我们的属性命名要规范，使用驼峰）。
 
+    2.3、关键字列表
+
+    Keyword	                    Sample	                                                    JPQL snippet
+
+    And	                        findByLastnameAndFirstname	                                … where x.lastname = ?1 and x.firstname = ?2
+    Or	                        findByLastnameOrFirstname	                                … where x.lastname = ?1 or x.firstname = ?2
+    Is, Equals	                findByFirstname,findByFirstnameIs,findByFirstnameEquals	    … where x.firstname = ?1
+    Between	                    findByStartDateBetween	                                    … where x.startDate between ?1 and ?2
+    LessThan	                findByAgeLessThan	                                        … where x.age < ?1
+    LessThanEqual	            findByAgeLessThanEqual	                                    … where x.age <= ?1
+    GreaterThan             	findByAgeGreaterThan	                                    … where x.age > ?1
+    GreaterThanEqual	        findByAgeGreaterThanEqual	                                … where x.age >= ?1
+    After	                    findByStartDateAfter	                                    … where x.startDate > ?1
+    Before	                    findByStartDateBefore	                                    … where x.startDate < ?1
+    IsNull, Null	            findByAge(Is)Null	                                        … where x.age is null
+    IsNotNull, NotNull	        findByAge(Is)NotNull	                                    … where x.age not null
+    Like	                    findByFirstnameLike	                                        … where x.firstname like ?1
+    NotLike	                    findByFirstnameNotLike	                                    … where x.firstname not like ?1
+    StartingWith	            findByFirstnameStartingWith	                                … where x.firstname like ?1 (parameter bound with appended %)
+    EndingWith	                findByFirstnameEndingWith	                                … where x.firstname like ?1 (parameter bound with prepended %)
+    Containing	                findByFirstnameContaining	                                … where x.firstname like ?1 (parameter bound wrapped in %)
+    OrderBy	                    findByAgeOrderByLastnameDesc	                            … where x.age = ?1 order by x.lastname desc
+    Not                     	findByLastnameNot	                                        … where x.lastname <> ?1
+    In	                        findByAgeIn(Collection<Age> ages)	                        … where x.age in ?1
+    NotIn	                    findByAgeNotIn(Collection<Age> ages)	                    … where x.age not in ?1
+    TRUE	                    findByActiveTrue()                                      	… where x.active = true
+    FALSE	                    findByActiveFalse()	                                        … where x.active = false
+    IgnoreCase	                findByFirstnameIgnoreCase	                                … where UPPER(x.firstame) = UPPER(?1)
+
 3、特殊参数处理
     框架可以识别Pageable和Sort，动态的将分页和排序应用到查询中。可以返回Page<T> 、Slice<T> 、List<T>。
     3.1、Sort和Pageable不能传null值，如果不想应用排序或分页，使用Sort.unsorted()和Pageable.unpaged()。
@@ -29,20 +58,18 @@
 数字，则假定结果大小为1。限制表达式也支持Distinct关键字。对于结果集限制为1个的示例查询，支持将结果包装到Optional中。如果将分页或切片
 应用于限制查询分页（以及对可用页面数的计算），则会在限制结果内应用分页或切片(不建议分页和限制同使使用)。
 
-5、返回结果的不同形式
-//TODO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+5、常用的返回结果的不同形式
+    5.1、void，对于我们不关乎结果的操作，可以选择不返回结果，一般用作更新。
+    5.2、Primitives，Java的基本类型，一般用作统计返回，（如long,boolean）。
+    5.3、Wrapper types，Java的包装类型。
+    5.4、T，返回一个实体，没有查询结果，返回null，如果超过一个返回结果，抛出IncorrectResultSizeDataAccessException异常。
+    5.5、Iterator<T>、Collection<T>、List<T>，Set<T>,返回多个结果时，可以使用迭代器，集合，List及其子类,Set及其子类。
+    5.6、Optional<T>，Java8或者Guava的Optional类，查询方法最多返回一个结果，如果不存在返回Optional.empty()或Optional.absent()，如果超出一个结果，抛出IncorrectResultSizeDataAccessException异常。
+    5.7、Stream<T>，Java8的Stream。必须在使用后关闭流。可以使用try-with-resources，也可以使用Stream的close()方法。
+    5.7、Streamable<T>，Spring-Data提供的Streamable，可以作为Iterator或任何集合类型的替代。
+    5.8、自定义Streamable的类型，实现Streamable并提供一个将Streamable作为参数的公开的构造方法或方法名为of(…) or valueOf(…)的静态工厂方法。
+    5.9、Slice<T>、Page<T>,分页相关，需要提供一个Pageable入参。Page继承自Slice，Slice继承自Streamable。
+    5.10、Future<T>，查询方法上需要添加@Async注解，并开启Spring异步执行方法功能。
+    5.11、CompletableFuture<T>，Java8的CompletableFuture，需要在方法上添加@Async注解，并开启Spring异步执行方法功能。
+    5.12、ListenableFuture，返回org.springframework.util.concurrent.ListenableFuture，需要在方法上添加@Async注解，并开启Spring异步执行方法功能。
+    5.13、关联查询时，可返回Object[] 和 Map

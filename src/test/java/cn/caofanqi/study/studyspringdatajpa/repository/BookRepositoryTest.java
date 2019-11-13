@@ -79,16 +79,17 @@ class BookRepositoryTest {
     @Test
     void testQueryByExampleExecutor(){
 
-        Book book = Book.builder().bookName("java").publishDate(LocalDate.now()).id(1L).build();
+        Book book = Book.builder().bookName("java").publishDate(LocalDate.of(2019,11,11)).id(1L).build();
 
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withIgnorePaths("id") //忽略id属性，不管id有没有值，都不作为查询条件。
                 .withIgnoreNullValues() //忽略属性为null的，不作为查询条件。
-                .withMatcher("bookName",m -> m.startsWith().ignoreCase()); //设置bookName属性，前包含，忽略大小写。
+                .withMatcher("bookName",m -> m.startsWith().ignoreCase()) //设置bookName属性，前包含，忽略大小写。
+                .withTransformer("publishDate",value -> Optional.of(LocalDate.of(2019,11,12))); //转换属性值
 
         Example<Book> example = Example.of(book,matcher);
 
-        bookRepository.findAll(example);
+        List<Book> books = bookRepository.findAll(example);
 
     }
 

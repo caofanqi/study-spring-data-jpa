@@ -2,20 +2,26 @@ package cn.caofanqi.study.studyspringdatajpa.repository;
 
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Author;
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.AuthorInfo;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.support.Authors;
 import cn.caofanqi.study.studyspringdatajpa.pojo.enums.Sex;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.data.util.Streamable;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -130,5 +136,62 @@ class AuthorRepositoryTest {
         Page<Author> authors = authorRepository.findTop3BySex(Sex.MAN, pageable);
         System.out.println(authors.getContent().size());
     }
+
+
+    @Test
+    void findByPhone(){
+        Optional<Author> authorOptional = authorRepository.findByPhone("123451");
+        assertTrue(authorOptional.isPresent());
+
+        Optional<Author> authorOptional2 = authorRepository.findByPhone("1234512323");
+        assertFalse(authorOptional2.isPresent());
+    }
+
+    @Test
+    void findBySexStream(){
+        try(Stream<Author> authors =  authorRepository.findBySex(Sex.MAN)) {
+           assertEquals(6,authors.count());
+        }
+    }
+
+    @Test
+    void readBySex(){
+        Streamable<Author> authors = authorRepository.readBySex(Sex.MAN).and(authorRepository.readBySex(Sex.WOMAN));
+        assertEquals(8,authors.stream().count());
+    }
+
+    @Test
+    void readByBirthday(){
+        Authors authors = authorRepository.readByBirthday(LocalDate.of(2019, 1, 1));
+        assertEquals(5,authors.stream().count());
+    }
+
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    void findByEmail(){
+        Future<Author> authorFuture = authorRepository.findByEmail("zs@zs.com");
+
+        while (!authorFuture.isDone()){
+            System.out.println("稍等...");
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            Author author = authorFuture.get();
+            assertEquals("zs@zs.com",author.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        authorRepository.deleteAll();
+    }
+
+
+
 
 }
