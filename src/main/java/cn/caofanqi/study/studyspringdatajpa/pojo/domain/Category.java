@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "jpa_category")
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQuery(name = "Category.selectByName",query = "SELECT c FROM Category c WHERE c.categoryName = ?1 ")
+@NamedQuery(name = "Category.selectByName",query = "select c from Category c where c.categoryName = ?1 ")
 @NamedNativeQuery(name = "Category.selectByNameLike",query = "SELECT * FROM cfq_jpa_category WHERE category_name LIKE ?1 ",resultClass = Category.class)
 public class Category {
 
