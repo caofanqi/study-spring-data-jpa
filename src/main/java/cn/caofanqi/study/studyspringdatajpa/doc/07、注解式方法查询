@@ -1,0 +1,13 @@
+1、@NamedQuery、@NamedNativeQuery
+    @NamedQuery与@NamedNativeQuery都是定义查询的一种形式，@NamedQuery使用的是JPQL，而@NamedNativeQuery使用的是原生SQL。
+    使用方法：
+        1.1、在实体@Entity下添加@NamedQuery或@NamedNativeQuery定义。
+        1.2、在Repository接口中声明方法。
+
+    注意：
+        1.3、@NamedQuery、@NamedNativeQuery注解也可以使用<named-query>、<named-native-query />标签来替代写在orm.xml中。
+        1.4、@NamedNativeQuery还可以与@SqlResultSetMapping(@EntityResult、@ConstructorResult、@ColumnResult、@FieldResult)注解配置使用，指定映射。
+        1.5、@NamedQueries、@NamedNativeQueries、@SqlResultSetMappings用于装多个@NamedQuery、@NamedNativeQuery、@SqlResultSetMapping。
+        1.6、我们一般不推荐使用@NamedQuery、@NamedNativeQuery，而使用下面的@Query注解。
+
+2、@Query
