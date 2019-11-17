@@ -11,3 +11,46 @@
         1.6、我们一般不推荐使用@NamedQuery、@NamedNativeQuery，而使用下面的@Query注解。
 
 2、@Query
+    对于少量的查询，使用@NamedQuery在实体上声明查询是一种有效的办法，并且可以很好的工作。由于查询本身绑定到执行它们的java方法，实际上
+可以通过Spring-Data-Jpa提供的@Query注解来直接绑定它们，而不是将它们注释到domain类。这将domain类从持久化特定信息中解放出来，并将查询共同定位到存储库接口。
+
+    2.1、在Repository接口的方法上添加即可。
+    2.2、可以识别LIKE的分隔符字符(%)，并将查询转换为有效的JPQL查询(删除%)。在执行查询时，传递给方法调用的参数将使用之前识别的LIKE模式进行扩充。
+    2.3、Spring-Data-Jpa目前不支持对nativeQuery=true时的Sort动态排序，对于原生SQL来说，它不能可靠的执行这种操作。但是可以通过指定count查询来使用分页。
+    2.4、默认情况下，Spring-Data-Jpa拒绝任何包含函数调用的Order实例，可以通过起别名或JpaSort来替代。
+    2.5、默认情况下，Spring-Data-Jpa是基于位置的参数绑定，当重构关于参数位置的查询方法时容易出错，可以使用@Param指定名称，进行名称绑定。如果参数名称和定义的名称一致，可以省略@Param。
+    2.6、支持一个entityName的spel变量，用法是select x from #{#entityName} x，插入entityName与给定Repository的关联的域类型。如果域类设置了@Entity的name属性，使用name属性的名称，如果没设置，使用域类型的简单类名。也可以在参数上使用spel表达式。
+    2.7、对于like条件，通常在开头或结尾添加%，可以在参数绑定或spel上附加%。
+    2.8、对于like条件中的_,%进行转义，在spel中可以使用escape(String) 进行替换，将第二个参数中的字符作为第一个参数中_和%的前缀。escape(String)方法只能将_或%转义，如果数据库有其他的通配符，这无法转义。
+    2.9、转义的字符可以通过@EnableJpaRepositories注解的escapeCharacter属性进行设置。
+
+3、@Modifying与派生delete
+    3.1、对于@Query执行INSERT、UPDATE、DELETE、DDL语句时，需要添加@Modifying注解，来改变查询方式。
+    3.2、@Modifying只有在使用@Query注解时，才考虑使用，对于自定义实现查询和方法名派生的查询则不需要。
+    3.3、由于EntityManager在执行修改查询后可能包含过时的实体，因此我们不会自动清除它，因为这实际上会删除EntityManager中仍挂起的所有为刷新的修改。如果希望自动清除EntityManager，将clearAutomatically设置为true。
+    3.4、Spring-Data-JPA还支持派生的delete查询，这样可以避免显式声明JPQL查询。
+    3.5、派生delete查询会先执行select在执行delete，使用@Query和@Modifying直接执行delete。
+    3.6、派生delete会触发@PreRemove，而@Query和@Modifying则不会。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.time.LocalDate;
  * 用户表
  * @author caofanqi
  */
+@Slf4j
 @Data
 @Entity
 @Builder
@@ -43,5 +46,11 @@ public class User {
 
     @Column(unique = true)
     private String email;
+
+
+    @PreRemove
+    public void onRemove(){
+        log.info("username :{} 被删除了...",this.getUsername());
+    }
 
 }
