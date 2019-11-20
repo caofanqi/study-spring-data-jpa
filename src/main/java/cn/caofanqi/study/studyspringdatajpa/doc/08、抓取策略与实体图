@@ -1,0 +1,40 @@
+1、抓取策略
+    在前面说到的关联关系注解中，都有一个fetch属性，@OneToOne、@ManyToOne中都默认是FetchType.EAGER，立即获取。@OneToMany、@ManyToMany默认值是FetchType.LAZY，延迟获取。
+这些注解的的fetch属性定义的是合适获取，至于如何获取，对与FetchType.EAGER,使用的是JOIN。FetchType.LAZY使用的是SELECT。JPA并没有提供我们设置如何获取的方式，如果想要进行
+修改要使用Hibernate提供的Fetch注解配置FetchMode。里面提供了三种方式SELECT、JOIN、SUBSELECT。（大多数情况下，我们不需要进行设置如何加载，使用默认的即可）
+
+    但是对于JPA的fetch，使用起来只有在使用Spring-Data-Jpa为我们提供的findById方法时，配置的fetch=FetchType.EAGER才会生效。而我们根据Spring-Data-Jpa规则定义的方法查询
+则不生效，还是会进行延迟加载。
+
+    这样的话，如果我们对于图书(Book)来说，我们使用findById方法时，是可以直接拿到门类(Category)信息的。但是通过findByBookName进行查询时，只有我们使用到门类的时候，才会
+发送一条查询门类的SQL，只是对于一条记录还好。但是如果我们查询一个图书列表(N本图书)的时候，这时就会执行N+1条SQL，这显然很影响效率，不是我们想要的，那么怎么解决呢？
+
+    使用@Query自己写JPQL语句进行解决。
+
+    使用Spring-Data-Jpa为我们提供的@EntityGraph，或@EntityGraph和@NamedEntityGraph进行解决。
+
+
+2、@EntityGraph
+    注解用于配置 JPA 2.1规范支持的javax.persistence.EntityGraph，应该使用在repository的方法上面。从1.9开始，我们支持动态EntityGraph定义，允许通过attributePaths()配置自定义fetch-graph。
+如果指定了attributePaths()，则忽略entity-graph的name（也就是配置的value()）,并将EntityGraph视为动态的。
+
+    属性value：要使用的名称。如果为空，则返回JpaQueryMethod.getNamedQueryName()作为value。一般为@NamedEntityGraph的name值，或者不填使用自己的attributePaths属性。
+    属性type：要使用的EntityGraphType，默认为EntityGraphType.FETCH。
+    属性attributePaths：要使用的属性路径，默认为空。可以直接引用实体属性，也可以通过roperty.nestedProperty引用嵌套属性。
+    枚举EntityGraphType：
+        LOAD("javax.persistence.loadgraph")：当javax.persistence.loadgraph属性用于指定实体图时，由实体图的attributePaths指定的属性将被视为FetchType.EAGER，未指定的属性，将根据其设置的或默认的FetchType来进行处理。
+        FETCH("javax.persistence.fetchgraph")：当javax.persistence.fetchgraph属性用于指定实体图时，由实体图的attributePaths指定的属性将被视为FetchType.EAGER，而未指定的属性被视为FetchType.LAZY。
+
+
+3、@NamedEntityGraphs、@NamedEntityGraph
+
+    @NamedEntityGraphs：用于对@NamedEntityGraph注解进行分组。
+    @NamedEntityGraph：用于指定查找操作或查询的路径和边界。
+        属性name：(可选) 实体图的名称。 默认为根实体的实体名。
+        属性attributeNodes：(可选) 包含在该图中的实体属性列表。
+        属性：includeAllAttributes：(可选)将注释实体类的所有属性作为属性节点包含在NamedEntityGraph中，而无需显式列出它们。包含的属性仍然可以由引用子图的属性节点完全指定。默认为false。一般不需要设置。
+        属性subgraphs：(可选)包含在实体图中的子图列表。这些是从NamedAttributeNode定义中按名称引用的。
+        属性subclassSubgraphs：(可选) 子图列表 这些子图将向实体图添加注释实体类的子类的附加属性。超类中的指定属性包含在子类中。
+
+
+

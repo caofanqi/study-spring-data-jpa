@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 作者实体
@@ -91,7 +89,6 @@ public class Author {
             @AttributeOverride(name = "value.detailedAddress",column = @Column(name = "addr_detailed")),
             @AttributeOverride(name = "value.zipCode",column = @Column(name = "addr_zip"))
     })
-
     private Map<String,Address> addresses;
 
 }

@@ -100,4 +100,51 @@ class BookRepositoryTest {
         System.out.println(books.size());
     }
 
+
+    /**
+     * 对于fetch= FetchType.EAGER ,使用findById会执行关联查询。
+     */
+    @Test
+    void testFindById(){
+        Optional<Book> bookOptional = bookRepository.findById(1L);
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            System.out.println(book.getCategory().getCategoryName());
+        }
+    }
+
+    /**
+     * 对于fetch= FetchType.EAGER ,使用我们自己定义的查询方法，则不生效，会使用懒加载的方式
+     */
+    @Test
+    void findByBookName(){
+        Optional<Book> bookOptional = bookRepository.findByBookName("java编程思想");
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            System.out.println(book.getCategory().getCategoryName());
+        }
+    }
+
+
+    /**
+     * 对于fetch= FetchType.EAGER ,使用我们自己定义的查询方法，则不生效，会使用懒加载的方式，执行 N+1条SQL。
+     * 可以通过@EntityGraph来进行解决
+     */
+    @Test
+    void findByPublishDate(){
+        List<Book> books = bookRepository.findByPublishDate(LocalDate.of(2019,11,17));
+        books.forEach(b -> System.out.println(b.getCategory().getCategoryName()));
+    }
+
+    /**
+     * 对于fetch= FetchType.EAGER ,使用@Query，自己写查询语句，解决N+1条SQL问题。
+     */
+    @Test
+    void findByPublishDateWithQuery(){
+        List<Book> books = bookRepository.findByPublishDateWithQuery(LocalDate.of(2019, 11, 17));
+        books.forEach(b -> System.out.println(b.getCategory().getCategoryName()));
+    }
+
+
+
 }

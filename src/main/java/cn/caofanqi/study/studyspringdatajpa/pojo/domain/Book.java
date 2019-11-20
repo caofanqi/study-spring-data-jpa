@@ -19,6 +19,9 @@ import java.util.List;
 @Table(name = "jpa_book")
 @NoArgsConstructor
 @AllArgsConstructor
+@NamedEntityGraphs({
+    @NamedEntityGraph(name = "Book.fetch.category",attributeNodes = {@NamedAttributeNode("category")})
+})
 public class Book {
 
     @Id

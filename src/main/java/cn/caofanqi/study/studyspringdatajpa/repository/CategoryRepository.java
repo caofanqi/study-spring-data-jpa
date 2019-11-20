@@ -1,6 +1,7 @@
 package cn.caofanqi.study.studyspringdatajpa.repository;
 
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Category;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -25,5 +26,21 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
      * @return category
      */
     List<Category> selectByNameLike(String name);
+
+
+    @Override
+    @EntityGraph(attributePaths = "children")
+    List<Category> findAll();
+
+    /**
+     * 查询根据父节点查询门类
+     * @param category category
+     * @return list
+     */
+//    @EntityGraph(value = "Category.findByParent")
+    @EntityGraph(attributePaths = {"children.children.children"})
+    List<Category> findByParent(Category category);
+
+
 
 }

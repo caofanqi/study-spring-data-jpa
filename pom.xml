@@ -19,6 +19,7 @@
         <!--   覆盖默认的8驱动     -->
         <mysql.version>5.1.41</mysql.version>
         <google.guava.version>20.0</google.guava.version>
+        <fastjson.version>1.2.58</fastjson.version>
     </properties>
 
     <dependencies>
@@ -49,6 +50,12 @@
             <artifactId>guava</artifactId>
             <version>${google.guava.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
 
 
