@@ -30,7 +30,7 @@ public class Address {
     /**
      * 可嵌入对象中的字段也可以使用@Column进行修饰
      */
-    @Column(nullable = false)
+    @Column(length = 100)
     private String detailedAddress;
 
     private String zipCode;
