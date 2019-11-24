@@ -1,6 +1,7 @@
 package cn.caofanqi.study.studyspringdatajpa.pojo.domain.projections;
 
 
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Address;
 import lombok.Value;
 
 /**
@@ -8,8 +9,10 @@ import lombok.Value;
  * @author caofanqi
  */
 @Value
-public class UsernameDTO {
+public class AdminUsernameAndAddressDTO {
 
     private String username;
+
+    private Address address;
 
 }
