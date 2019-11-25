@@ -148,8 +148,14 @@ class AdminRepositoryTest {
 
     @Test
     void findRoleNameAndAdminCountAndAgeAvgWithDTO(){
-        List<RoleNameAndAdminCountAndAgeAvgDTO> roleNameAndAdminCountAndAgeAvgWithDTO = roleRepository.findRoleNameAndAdminCountAndAgeAvgWithDTO();
+        List<RoleNameAndAdminCountAndAgeAvgDTO> roleNameAndAdminCountAndAgeAvgWithDTO = roleRepository.findRoleNameAndAdminCountAndAgeAvgDTOWithJPQL();
         roleNameAndAdminCountAndAgeAvgWithDTO.forEach(r -> System.out.println(r.getRoleName() + " : " + r.getAdminCount() + " : " + r.getAgeAvg()));
+    }
+
+    @Test
+    void findRoleNameAndAdminCountAndAgeAvgDTOWithSQL(){
+        List<RoleNameAndAdminCountAndAgeAvgDTO> roleNameAndAdminCountAndAgeAvgDTOWithSQL = roleRepository.findRoleNameAndAdminCountAndAgeAvgDTOWithSQL();
+        roleNameAndAdminCountAndAgeAvgDTOWithSQL.forEach(r -> System.out.println(r.getRoleName() + " : " + r.getAdminCount() + " : " + r.getAgeAvg()));
     }
 
 }

@@ -32,6 +32,10 @@ spel表达式可以使用实体的任何属性。
 
 多表关联时，我们应该多使用投影去让我们写出可读性更高的代码，而不是使用Object[],Map等。
 
+最佳实践:有实体类之外的字段映射时
+         使用接口投影时，JPQL还是原生SQL，都不用额外处理
+         使用DTO投影时，JPQL，要使用构造函数，原生SQL，要使用@NamedNativeQuery、@SqlResultSetMapping、@Query(nativeQuery = true)注解一起使用
+
 
 
 
