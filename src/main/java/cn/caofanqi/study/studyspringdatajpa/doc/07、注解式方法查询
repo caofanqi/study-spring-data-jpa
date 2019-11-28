@@ -23,6 +23,8 @@
     2.7、对于like条件，通常在开头或结尾添加%，可以在参数绑定或spel上附加%。
     2.8、对于like条件中的_,%进行转义，在spel中可以使用escape(String) 进行替换，将第二个参数中的字符作为第一个参数中_和%的前缀。escape(String)方法只能将_或%转义，如果数据库有其他的通配符，这无法转义。
     2.9、转义的字符可以通过@EnableJpaRepositories注解的escapeCharacter属性进行设置。
+    2.10、当 #{entityName} 与参数SPEL表达式一起使用时，参数要使用?#{进行开头，请参看ExpressionBasedStringQuery类。
+
 
 3、@Modifying与派生delete
     3.1、对于@Query执行INSERT、UPDATE、DELETE、DDL语句时，需要添加@Modifying注解，来改变查询方式。

@@ -114,11 +114,13 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     /**
      * 使用spel表达式
+     * 当 #{#entityName} 与SPEL 一起使用时，参数要使用 ?#{
      *
      * @param user user
      * @return user
      */
-    @Query(value = "select u from User u where u.username = :#{#user.username} ")
+//    @Query(value = "select u from User u where u.username = :#{#user.username} ")
+    @Query(value = "select u from #{#entityName} u where u.username = ?#{#user.username} ")
     User findUserByUsernameWithSpel(User user);
 
 
