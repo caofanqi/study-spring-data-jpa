@@ -1,5 +1,6 @@
 package cn.caofanqi.study.studyspringdatajpa.pojo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +41,7 @@ public class Category {
      *  父门类，通过parent_id来维护父子关系。
      *  使用@ToString.Exclude，解决lombok的toString方法循环引用问题。
      */
+    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id",referencedColumnName = "id")

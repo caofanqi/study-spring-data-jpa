@@ -1,5 +1,6 @@
 package cn.caofanqi.study.studyspringdatajpa.pojo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Book {
     /**
      * 书和门类是多对一的关系
      */
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private Category category;
@@ -42,6 +44,7 @@ public class Book {
     /**
      * 书和作者是多对多的关系，我们让book为关联拥有放，添加@JoinTable注解。
      */
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "jpa_book_author",
             joinColumns = @JoinColumn(name="book_id", referencedColumnName="id"),

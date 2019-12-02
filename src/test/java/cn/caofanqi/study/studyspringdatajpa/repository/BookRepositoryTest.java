@@ -1,6 +1,8 @@
 package cn.caofanqi.study.studyspringdatajpa.repository;
 
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Book;
+//import cn.caofanqi.study.studyspringdatajpa.pojo.domain.spec.BookSpecs;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.spec.BookSpecs;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +26,7 @@ class BookRepositoryTest {
 
     @Resource
     private BookRepository bookRepository;
+
 
     @Test
     void findBooksByBookNameContains() {
@@ -146,5 +149,36 @@ class BookRepositoryTest {
     }
 
 
+    /*
+     * Spec
+     */
+
+    @Test
+    void testSpec1(){
+        List<Book> books = bookRepository.findAll(BookSpecs.bookNameLike("java"));
+        books.forEach(b-> System.out.println(b.getBookName()));
+    }
+
+    @Test
+    void testSpec2(){
+        List<Book> books = bookRepository.findAll(BookSpecs.bookNameLike("java").and(BookSpecs.isNewBook()));
+        books.forEach(b-> System.out.println(b.getBookName()));
+    }
+
+    /**
+     * 排序和分页一样使用
+     */
+    @Test
+    void testSpec3(){
+        List<Book> books = bookRepository.findAll(BookSpecs.isNewBook(),Sort.by(Sort.Direction.DESC,"publishDate"));
+        books.forEach(b-> System.out.println(b.getBookName()));
+    }
+
+
+    @Test
+    void testSpec4(){
+        List<Book> books = bookRepository.findAll(BookSpecs.categoryNameLike("数据库"));
+        books.forEach(b-> System.out.println(b.getBookName()));
+    }
 
 }

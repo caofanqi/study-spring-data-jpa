@@ -1,0 +1,28 @@
+1、JpaSpecificationExecutor
+    JPA2引入了一个criteria API，我们可以使用它以编程的形式构建查询。通过编写criteria，动态生成query语句。JpaSpecificationExecutor
+是Spring-Data-JPA为我们执行基于JPA criteria API的Specification查询接口。想要使用该功能，我们自己的Repository接口继承这个接口就可以了。
+该接口提供了几个根据Specification进行查询的方法。
+
+2、Specification
+    JpaSpecificationExecutor的每一个方法中都有一个Specification参数，Specification接口中的toPredicate方法是该接口的核心方法。
+Specification可以很容易的在实体上构建一组可扩展的Predicate。然后可以对其进行组合使用，这样JpaRepository就不用为每一种情况都写一个查询方法了。
+    toPredicate方法种有三个参数：
+        Root<T>，代表查询和操作实体的根，我们可以通过它的get方法来获得我们操作的字段，可以写实体属性字符串，也可以使用@StaticMetamodel标记的类来指定。
+        CriteriaQuery<?>，抽象了整个查询语句，用来把各个段组合在一起。
+        CriteriaBuilder，用来构建CritiaQuery的构建器对象，其实就相当于条件或者是条件组合，以谓语即Predicate的形式返回。
+
+3、SpecificationComposition
+    帮助类，以支持specification的组合模式。
+
+4、使用JPAMetaModelEntityProcessor生成元模型
+    4.1、导入hibernate-jpamodelgen依赖
+    4.2、IDEA配置Annoation Processors
+    4.3、和lombok一起使用，添加maven插件
+
+5、JpaRepositoryImplementation
+    JpaRepository和JpaSpecificationExecutor接口的子类，我们可以直接继承改接口。
+
+
+
+
+

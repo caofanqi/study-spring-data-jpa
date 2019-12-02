@@ -4,7 +4,9 @@ import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Book;
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Category;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
@@ -24,7 +26,8 @@ import java.util.Optional;
 //public interface BookRepository extends Repository<Book,Long>{
 //public interface BookRepository extends CrudRepository<Book,Long> {
 //public interface BookRepository extends PagingAndSortingRepository<Book,Long> , QueryByExampleExecutor<Book> {
-public interface BookRepository extends JpaRepository<Book,Long> {
+//public interface BookRepository extends JpaRepository<Book,Long> , JpaSpecificationExecutor<Book> {
+public interface BookRepository extends JpaRepositoryImplementation<Book,Long> {
 
     /**
      * 根据书名查找书籍
