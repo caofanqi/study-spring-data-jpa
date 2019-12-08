@@ -1,0 +1,9 @@
+1、@Version
+    JPA提供的乐观锁，指定实体中的字段或属性作为乐观锁的version，该version用于确保并发操作的正确性。每个实体只能使用一个version属性或字段。
+version支持（int, Integer, short, Short, long, Long, java.sql.Timestamp）类型的属性或字段。
+    加了@Version后，insert和update的SQL语句都会带上version的操作。当乐观锁更新失败的时候，会抛出异常org.springframework.orm.ObjectOptimisticLockingFailureException。
+
+2、@Lock
+    spring-data-jpa为我们提供了@Lock注解，指定查询方法要使用的锁定模式。可以添加在派生查询上，也可以重写父类CRUD的方法，添加该注解。
+@Lock只有一个value属性，为LockModeType枚举类型，我们主要看以下里面的悲观锁PESSIMISTIC_WRITE。
+    for update ，如果不通过索引条件检索数据，那么InnoDB将对表中的所有记录加锁，实际效果跟锁表一样。
