@@ -1,0 +1,14 @@
+    Spring-Data还提供了Web模块的支持，这要求Web组件Spring-MVC的jar包位于classpath下。通常通过使用@EnableSpringDataWebSupport注解来启用继承支持。
+
+    SpringDataWebAutoConfiguration上已经添加了@EnableSpringDataWebSupport注解，我们不需要再额外配置。
+
+    @EnableSpringDataWebSupport会为我们注册几个组件。
+
+    DomainClassConverter：
+
+
+    HandlerMethodArgumentResolvers:
+
+
+
+    相关配置
