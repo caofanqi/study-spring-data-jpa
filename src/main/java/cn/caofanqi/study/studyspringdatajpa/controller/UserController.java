@@ -22,9 +22,6 @@ import javax.annotation.Resource;
 @RequestMapping("/user")
 public class UserController {
 
-    @Resource
-    private UserRepository userRepository;
-
 
     /**
      * 这里会直接调用User对应的Repository来进行findById查询。
@@ -36,11 +33,13 @@ public class UserController {
     }
 
 
+    @Resource
+    private UserRepository userRepository;
+
     /**
      * 参数page：默认为0。
      * 参数size：默认为20。
      * 参数sort：排序按property,property(,ASC|DESC)的方式来填写，默认为升序，如果想要属性有不同的排序方向，要用多个sort参数
-     *
      */
     @GetMapping
     public Page<User> listUser(Pageable pageable){
