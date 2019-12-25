@@ -1,14 +1,10 @@
-    Spring-Data还提供了Web模块的支持，这要求Web组件Spring-MVC的jar包位于classpath下。通常通过使用@EnableSpringDataWebSupport注解来启用继承支持。
+Spring-Data还提供了Web模块的支持，这要求Web组件Spring-MVC的jar包位于classpath下。通常通过使用@EnableSpringDataWebSupport注解来启用继承支持。
+SpringDataWebAutoConfiguration上已经添加了@EnableSpringDataWebSupport注解，我们不需要再额外配置。
 
-    SpringDataWebAutoConfiguration上已经添加了@EnableSpringDataWebSupport注解，我们不需要再额外配置。
+一、@EnableSpringDataWebSupport会为我们注册几个组件：
+1、DomainClassConverter：可以直接让我们在Spring-MVC控制器的方法参数列表中使用实体类型，而无需通过Repository手动查找实例（需要Repository实现CrudRepository才有资格被发现可以进行转换）。
+2、HandlerMethodArgumentResolvers:还为我们注册了PageableHandlerMethodArgumentResolver和SortHandlerMethodArgumentResolver让Pageable和Sort可以作为控制层方法参数。
+    如果有多个分页或排序时（多个表），用@Qualifier来解决，请求参数要以${qualifier}_开头
+二、使用@PageableDefault自定义pageable
 
-    @EnableSpringDataWebSupport会为我们注册几个组件。
-
-    DomainClassConverter：
-
-
-    HandlerMethodArgumentResolvers:
-
-
-
-    相关配置
+三、可以通过spring.data.web.xxx来进行定制化配置
