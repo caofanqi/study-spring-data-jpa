@@ -2,6 +2,8 @@ package cn.caofanqi.study.studyspringdatajpa.repository;
 
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Book;
 //import cn.caofanqi.study.studyspringdatajpa.pojo.domain.spec.BookSpecs;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.EBook;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.PrintBook;
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.spec.BookSpecs;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,9 @@ class BookRepositoryTest {
 
     @Resource
     private BookRepository bookRepository;
+
+    @Resource
+    private EBookRepository eBookRepository;
 
 
     @Test
@@ -180,5 +185,48 @@ class BookRepositoryTest {
         List<Book> books = bookRepository.findAll(BookSpecs.categoryNameLike("数据库"));
         books.forEach(b-> System.out.println(b.getBookName()));
     }
+
+
+    /*
+     * 继承策略
+     */
+
+    @Test
+    void testExtends1(){
+
+        Book book = new Book();
+        book.setBookName("书籍001");
+        bookRepository.save(book);
+
+        PrintBook printBook = new PrintBook();
+        printBook.setBookName("纸质书籍001");
+        printBook.setPrintDate(LocalDate.of(2019,12,20));
+        bookRepository.save(printBook);
+
+        EBook eBook = new EBook();
+        eBook.setBookName("电子书001");
+        eBook.setFormat("txt");
+        bookRepository.save(eBook);
+
+    }
+
+
+    @Test
+    void testExtends2(){
+
+        List<Book> books = bookRepository.findAll();
+        books.forEach(b -> System.out.println(b.getClass().getSimpleName()));
+
+    }
+
+    @Test
+    void testExtends3(){
+        List<EBook> books = eBookRepository.findAll();
+        books.forEach(b -> System.out.println(b.getClass().getSimpleName()));
+        EBook eBook = books.get(0);
+        eBook.setBookName("EBook001");
+        eBook.setFormat("pdf");
+    }
+
 
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "jpa_book")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
 @AllArgsConstructor
 @NamedEntityGraphs({
@@ -26,7 +29,16 @@ import java.util.List;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "sequenceGenerator") //指定生成器
+    @GenericGenerator(name = "sequenceGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",//为生成器指定策略（hibernate默认提供的）
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "id_sequence"),//指定要用的序列或表的名称
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.INITIAL_PARAM, value = "1000"),//sequence从几开始
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.INCREMENT_PARAM, value = "1"),//增量步长
+                    @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.OPT_PARAM, value = "pooled"),//指定优化器，用于提高性能
+            }
+    )
     private Long id;
 
     private  String bookName;
