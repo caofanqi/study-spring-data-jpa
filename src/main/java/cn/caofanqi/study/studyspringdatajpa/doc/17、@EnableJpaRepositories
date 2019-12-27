@@ -1,0 +1,26 @@
+1、在使用SpringBoot项目的时候，我们只需要添加spring-boot-starter-data-jpa的依赖就可以使用了。
+其实是spring-boot-autoconfigure帮我们做好了，在该jar包下的META-INF中spring.factories中可以找到
+org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration，帮我们自动
+配置了Spring-Data-Jpa Repository，我们可以使用@EnableJpaRepositories注解来覆盖默认的配置。
+
+2、@EnableJpaRepositories
+    value：basePackages的别名，简化basePackages。
+    basePackages：用于配置扫描Repositories所在的包。填写字符串（或字符串数组）形式的包名。
+    basePackageClasses：basePackages的安全替代选选项。指定一个要扫描包中的一个类或接口，将扫描所在包中的所有repository。
+        可以考虑在每个要扫描的包中创建一个类或接口，它除了被这个属性引用外，没有其他用途。
+    includeFilters：指定哪些类型的组件被扫描。
+    excludeFilters：指定哪些类型的组件不被扫描。
+    repositoryImplementationPostfix：查找自定义存储库实现时要使用的后缀。默认为Impl。对于名为PersonRepository的存储库，将通过扫描PersonRepositoryImpl来查找相应的实现类。
+    namedQueriesLocation：配置Spring-Data的named queries 属性文件的位置，默认META-INF/jpa-named-queries.properties。
+    queryLookupStrategy：查询方法的查询策略。默认为QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND。
+    repositoryFactoryBeanClass：用于每个存储库实例的FactoryBean类。默认为JpaRepositoryFactoryBean。
+    repositoryBaseClass：配置存储库基类，以用于为该特定配置创建存储库代理。
+    entityManagerFactoryRef：配置EntityManagerFactory bean定义的名称。默认为entityManagerFactory。
+    transactionManagerRef：配置PlatformTransactionManager bean定义的名称。默认为transactionManager。
+    considerNestedRepositories：配置是否发现嵌套的Repository接口（如定义为内部类）。默认为false。
+    enableDefaultTransactions：配置Spring-Data-Jpa 的Repositories是否启用默认事务，默认为true。如果禁用，则必须在外层使用。
+    bootstrapMode：配置在引导生命周期中何时初始化Repository。默认为BootstrapMode.DEFAULT，除了添加了BootstrapMode.LAZY的接口外，其他接口立即初始化。
+        BootstrapMode.LAZY，Repository的bean定义被认为是懒加载注入，并且只在首次使用时初始化，即应用程序可能在没有初始化Repository的情况下完全启动。
+        BootstrapMode.DEFERRED,Repository的bean定义被认为是懒加载注入，但存储库初始化在应用程序上下文引导完成时触发。
+    escapeCharacter：配置在包含contains、startsWith或endsWith子句的派生查询中用于转义 _ 或 % 的通配符字符。
+
