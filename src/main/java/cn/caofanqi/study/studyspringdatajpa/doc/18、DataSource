@@ -1,0 +1,49 @@
+1、SpringBoot 2.2.x默认使用的DataSource
+    SpringBoot 2.2.x版本，默认使用的DataSource是HikariCP，可以直接通过注入DataSource，并打印出打印全限定名，可以查看。
+    或可以通过查看自动配置源码，来找到：
+        @SpringBootApplication -> @EnableAutoConfiguration 所在jar包的META-INF/spring.factories中可以找到 org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+      -> 进入JpaRepositoriesAutoConfiguration后发现需要先配置HibernateJpaAutoConfiguration -> 进入HibernateJpaAutoConfiguration后发现需要先配置DataSourceAutoConfiguration -> 进入DataSourceAutoConfiguration
+      后发现导入了DataSourcePoolMetadataProvidersConfiguration配置，点进入发现SpringBoot为我们提供了三种默认配置，Tomcat提供的jdbc、HikariCP、阿帕奇提供的Dbcp2，使用那个看引入的那个jar包了，通过maven依赖关系可以知道spring-boot-starter-data-jpa中引入了
+      spring-boot-starter-jdbc，而spring-boot-starter-jdbc中引用的是HikariCP，所以默认使用的是HikariCP。
+
+    如果想使用另外两个连接池，只需要在pom中添加对应的依赖，并在properties中通过spring.datasource.type指定全限定名即可。
+
+2、DataSource的相关配置
+    我们通过DataSourceAutoConfiguration类上的@EnableConfigurationProperties(DataSourceProperties.class)，可以知道相关的配置在
+    DataSourceProperties类中，都是以spring.datasource开头的属性配置。
+        name：数据源的名称，使用嵌入式数据库时，默认名称是testdb。
+        generateUniqueName：是否生成随机数据源名称。
+        type：要使用的连接池实现的完全限定名。默认情况下，它是从类路径自动检测的。
+        driverClassName：JDBC驱动程序的完全限定名。默认情况下根据URL自动检测。
+        url：数据库的JDBC URL。
+        username：数据库登录用户名。
+        password：数据库登录密码。
+        jndiName：数据源的JNDI位置。设置时将忽略类、url、用户名和密码。
+        initializationMode：使用可用的DDL和DML脚本初始化数据源，默认使用嵌入式数据库时使用。
+        platform：要在DDL或DML脚本中使用的平台（例如schema-${Platform}.sql或data-${Platform}.sql）。
+        schema：DDL脚本资源位置。进行该配置后，每次启动程序，程序都会运行指定的sql文件，对数据库的结构进行操作。
+        schemaUsername：执行DDL脚本的数据库用户名。
+        schemaPassword：执行DDL脚本的数据库密码。
+        data：DML脚本资源位置。进行该配置后，每次启动程序，程序都会运行定的sql文件，对数据库的数据操作。
+        dataUsername：执行DML脚本的数据库用户名。
+        dataPassword：执行DML脚本的数据库密码。
+        continueOnError：如果初始化数据库时发生错误，是否停止。默认false
+        separator： SQL初始化脚本中的语句分隔符。
+        sqlScriptEncoding：SQL脚本编码。
+        xa：xa相关设置。
+
+3、Spring-Boot中使用druid连接池
+    阿里的druid连接池使用者很多，而且提供了监控功能，使用起来也很方便。在pom中添加druid-spring-boot-starter依赖即可。
+    主要的类是DruidDataSourceAutoConfigure，里面就配置了一个DruidDataSourceWrapper，兼容了DataSourceProperties的配置。
+    连接池的相关配置可以在DruidDataSource和DruidAbstractDataSource中看到默认的配置。
+
+
+4、多数据源配置
+   application.properties配置文件中添加连接池配置。
+   添加配置类。
+
+https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
+
+
+
+

@@ -5,8 +5,11 @@ import cn.caofanqi.study.studyspringdatajpa.repository.RepositoryScan;
 import cn.caofanqi.study.studyspringdatajpa.repository.impl.MyRepositoryImpl;
 import cn.caofanqi.study.studyspringdatajpa.support.AuditorAwareImpl;
 import cn.caofanqi.study.studyspringdatajpa.support.IdAuditorAwareImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.AuditorAware;
@@ -18,7 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.persistence.Id;
+import javax.sql.DataSource;
 
 /**
  * 启动类
@@ -33,7 +38,11 @@ import javax.persistence.Id;
         /*queryLookupStrategy = QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND*/
         /*repositoryBaseClass = MyRepositoryImpl.class*/)
 @EnableJpaAuditing(auditorAwareRef = "idAuditorAwareImpl")
-public class StudySpringDataJpaApplication {
+public class StudySpringDataJpaApplication implements CommandLineRunner {
+
+    @Resource
+    private DataSource dataSource;
+
 
     public static void main(String[] args) {
         SpringApplication.run(StudySpringDataJpaApplication.class, args);
@@ -51,6 +60,11 @@ public class StudySpringDataJpaApplication {
     @Bean(name = "idAuditorAwareImpl")
     public AuditorAware<Long> idAuditorAwareImpl() {
         return new IdAuditorAwareImpl();
+    }
+
+    @Override
+    public void run(String... args) {
+        System.out.println("使用的 DataSource : " + dataSource.getClass().getName());
     }
 
 }
