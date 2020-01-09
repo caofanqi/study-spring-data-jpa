@@ -1,6 +1,6 @@
 package cn.caofanqi.study.studyspringdatajpa.service.impl;
 
-import cn.caofanqi.study.studyspringdatajpa.pojo.Account;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Account;
 import cn.caofanqi.study.studyspringdatajpa.repository.AccountRepository;
 import cn.caofanqi.study.studyspringdatajpa.service.AccountService;
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Rollback(false)
 @Transactional

@@ -1,4 +1,4 @@
-package cn.caofanqi.study.studyspringdatajpa.pojo;
+package cn.caofanqi.study.studyspringdatajpa.pojo.domain;
 
 import cn.caofanqi.study.studyspringdatajpa.pojo.domain.AbstractID;
 import lombok.AllArgsConstructor;

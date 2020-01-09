@@ -1,0 +1,41 @@
+1、@EnableTransactionManagement
+    该注解用于启用Spring的注释驱动事务管理功能，用于@Configuration类。配置后会负责注册必要的Spring组件，为注解驱动事务管理提供动力。
+例如TransactionInterceptor和基于代理或AspectJ的通知，在调用添加@Transactional的方法时，将拦截器编织到堆栈中。
+
+    proxyTargetClass：是否创建基于子类的代理(CGLIB)，而不是基于标准Java接口的代理(JDK动态代理)，默认为false。仅当mode设置为AdviceMode.PROXY时
+        才适用。需要注意的是，将此属性设置为true将影响所有需要代理的Spring托管bean，而不仅仅是标记为@Transactional的bean。例如，用@Async注释标记
+        的其他bean将同时升级为子类代理。
+    mode：事务通知的方式。默认是代理模式AdviceMode.PROXY。需要注意的是，代理模式只允许通过代理拦截调用。同一个类中的本地调用不能以这种方式被拦截；
+        本地调用中此类的@Transactional将会被忽略。对于更高级的拦截模式，可以考虑切换到AdviceMode.ASPECTJ，如果模式设置为AdviceMode.ASPECTJ，
+        则将忽略proxyTargetClass属性的值。还要注意，在这种情况下，spring-aspects模块JAR必须出现在类路径上，在这种情况下不涉及代理；本地调用也将被拦截。
+    order：在特定连接点应用多个通知时事务处理的执行顺序。默认值为Ordered.LOWEST_PRECEDENCE。
+
+
+    正常情况下，需要在我们的配置上类添加@EnableTransactionManagement注解才能开启事务管理。这个SpringBoot也为我们自动配置了。
+spring-boot-autoconfigure中的spring.factories里面默认加载org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration
+查看源码可以看到里面已经加了此注解，默认采用AdviceMode.PROXY，所以默认情况的事务管理机制是代理方式的，通过添加@Transactional注解式配置方法。
+我们通过查看可以知道，SimpleJpaRepository每个方法都是有事务的。对于读取操作，事务配置为readOnly为true的。其他操作配置的是一个普通的@Transactional，以便应用默认的事务配置。
+
+2、@Transactional
+     描述单个方法或类的事务属性。在类级别，此注释作为默认值应用于声明类及其子类的所有方法。请注意，它不适用于类层次结构上的祖先类；
+
+    value/transactionManager：指定事务管理器。bean的名称。当有多个数据源的时候设置。
+    propagation：事务传播行为。默认为Propagation.REQUIRED。
+    isolation：事务隔离级别。默认为Isolation.DEFAULT。基本不需要设置。
+    timeout：设置事务的超时秒数，默认永不超时。
+    readOnly：设置事务是否是只读的。如果事务时有效自读的，设置为true，将会在运行时进行相应的优化。默认为false。
+    rollbackFor：指定遇到哪些异常进行事务回滚。默认情况下，将在RuntimeException和Error上回滚。
+    rollbackForClassName：功能如rollbackFor，只是这里填写字符串。
+    noRollbackFor：指定遇到哪些异常事务不回滚。
+    noRollbackForClassName：功能如noRollbackFor，只是这里填写字符串。
+
+3、Propagation事务传播行为
+    事务的传播行为是指：如果在开始当前事务之前，一个事务上下文已经存在，此时有若干选项可以指定一个事务性方法的执行行为。
+    Propagation枚举类中共有七种传播行为
+        REQUIRED：支持当前事务，如果不存在，则创建新事务。
+        SUPPORTS：支持当前事务，如果不存在，则执行非事务性事务。
+        MANDATORY：支持当前事务，如果不存在则引发异常。
+        REQUIRES_NEW：创建一个新事务，如果存在一个事务，则暂停当前事务。
+        NOT_SUPPORTED：执行非事务性操作，如果存在，则暂停当前事务。
+        NEVER：执行非事务性操作，如果事务存在，则引发异常。
+        NESTED：如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则该取值等价于REQUIRED。

@@ -1,4 +1,4 @@
-package cn.caofanqi.study.studyspringdatajpa.configurer;
+package cn.caofanqi.study.studyspringdatajpa.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest
 @ActiveProfiles("multi-datasource")
-class MultiDataSourceConfigurerTest {
+class MultiDataSourceConfigTest {
 
     @Resource
     private DruidDataSource dataSourceOne;
@@ -25,7 +25,7 @@ class MultiDataSourceConfigurerTest {
     @Test
     void testDataSourceOne(){
 
-        assertThat(dataSourceOne.getUrl()).isEqualTo("jdbc:mysql://localhost:3306/study-spring-data-jpa?characterEncoding=UTF-8&useSSL=false");
+        assertThat(dataSourceOne.getUrl()).isEqualTo("jdbc:mysql://localhost:3306/study-spring-data-jpa1?characterEncoding=UTF-8&useSSL=false");
         assertThat(dataSourceOne.getUsername()).isEqualTo("root");
         assertThat(dataSourceOne.getPassword()).isEqualTo("root");
         assertThat(dataSourceOne.getDriverClassName()).isEqualTo("com.mysql.jdbc.Driver");

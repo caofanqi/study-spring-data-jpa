@@ -1,6 +1,6 @@
 package cn.caofanqi.study.studyspringdatajpa.repository;
 
-import cn.caofanqi.study.studyspringdatajpa.pojo.Account;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Account;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Rollback(false)
 @Transactional

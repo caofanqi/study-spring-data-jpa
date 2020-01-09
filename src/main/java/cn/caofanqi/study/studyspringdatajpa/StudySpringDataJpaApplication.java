@@ -29,7 +29,6 @@ import javax.sql.DataSource;
  * 启动类
  * @author caofanqi
  */
-@SpringBootApplication
 @EnableAsync
 @EnableJpaRepositories(/*basePackages = {"cn.caofanqi.study.studyspringdatajpa.repository"}*/
         /*basePackageClasses = RepositoryScan.class*/
@@ -38,14 +37,19 @@ import javax.sql.DataSource;
         /*queryLookupStrategy = QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND*/
         /*repositoryBaseClass = MyRepositoryImpl.class*/)
 @EnableJpaAuditing(auditorAwareRef = "idAuditorAwareImpl")
+@SpringBootApplication
 public class StudySpringDataJpaApplication implements CommandLineRunner {
 
     @Resource
     private DataSource dataSource;
 
-
     public static void main(String[] args) {
         SpringApplication.run(StudySpringDataJpaApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) {
+        System.out.println("使用的 DataSource : " + dataSource.getClass().getName());
     }
 
     /**
@@ -60,11 +64,6 @@ public class StudySpringDataJpaApplication implements CommandLineRunner {
     @Bean(name = "idAuditorAwareImpl")
     public AuditorAware<Long> idAuditorAwareImpl() {
         return new IdAuditorAwareImpl();
-    }
-
-    @Override
-    public void run(String... args) {
-        System.out.println("使用的 DataSource : " + dataSource.getClass().getName());
     }
 
 }

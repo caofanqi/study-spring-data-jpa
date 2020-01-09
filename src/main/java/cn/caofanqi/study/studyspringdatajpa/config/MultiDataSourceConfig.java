@@ -1,4 +1,4 @@
-package cn.caofanqi.study.studyspringdatajpa.configurer;
+package cn.caofanqi.study.studyspringdatajpa.config;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,7 +15,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @Profile("multi-datasource")
-public class MultiDataSourceConfigurer {
+public class MultiDataSourceConfig {
 
 
     @Primary
@@ -31,7 +31,5 @@ public class MultiDataSourceConfigurer {
     public DataSource dataSourceTwo(){
         return DruidDataSourceBuilder.create().build();
     }
-
-
 
 }

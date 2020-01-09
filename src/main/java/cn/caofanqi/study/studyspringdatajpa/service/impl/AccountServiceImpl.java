@@ -1,6 +1,6 @@
 package cn.caofanqi.study.studyspringdatajpa.service.impl;
 
-import cn.caofanqi.study.studyspringdatajpa.pojo.Account;
+import cn.caofanqi.study.studyspringdatajpa.pojo.domain.Account;
 import cn.caofanqi.study.studyspringdatajpa.repository.AccountRepository;
 import cn.caofanqi.study.studyspringdatajpa.service.AccountService;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;

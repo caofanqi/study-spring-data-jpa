@@ -44,6 +44,19 @@
 
 https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
 
+5、Jpa相关属性配置
+    主要在JpaProperties和HibernateProperties中。
 
+    JpaProperties类：
+        properties：Jpa提供商的本地属性。
+        mappingResources：映射资源（相当于persistence.xml中的“Mapping file”）
+        databasePlatform：要操作的目标数据库的名称，默认情况下自动检测。也可以使用“Database”枚举类设置。
+        database：要操作的目标数据库，默认情况下自动检测。也可以使用“databasePlatform”属性进行设置。
+        generateDdl：是否在启动时初始化ddl（根据实体生成表结构），默认不初始化。
+        showSql：是否打印SQL，默认不显示。
+        openInView：注册OpenEntityManagerInViewInterceptor。在请求的整个处理过程中将JPA EntityManager绑定到线程。
 
-
+     HibernateProperties类：
+        naming：命名策略。
+        ddlAuto：DDL模式。这实际上是“hibernate.hbm2ddl.auto”属性的快捷方式。在使用嵌入式数据库且未检测到架构管理器时，默认为“create-drop”。否则，默认为“none”。
+        useNewIdGeneratorMappings：是否使用Hibernate新的IdentifierGenerator来实现AUTO、TABLE和SEQUENCE。这实际上是“hibernate.id.new_generator_mappings”属性的快捷方式。未指定时将默认为“true”。
