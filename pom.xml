@@ -20,7 +20,7 @@
         <mysql.version>5.1.41</mysql.version>
         <!--  工具类 -->
         <google.guava.version>20.0</google.guava.version>
-        <fastjson.version>1.2.58</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <!--   datasource连接池    -->
         <tomcat-jdbc.version>8.5.15</tomcat-jdbc.version>
         <dbcp2.version>2.7.0</dbcp2.version>
